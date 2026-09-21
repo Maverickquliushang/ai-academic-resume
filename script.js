@@ -934,6 +934,290 @@ function importJson(file) {
   reader.readAsText(file, "utf-8");
 }
 
+
+/* =========================================================
+   Mobile-friendly PDF export
+   ---------------------------------------------------------
+   html2canvas + jsPDF are loaded only when the user exports.
+   Resume data stays in the browser; only library files are
+   requested from jsDelivr.
+   ========================================================= */
+
+const pdfLibraryUrls = {
+  html2canvas: "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js",
+  jspdf: "https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"
+};
+
+function isIOSDevice() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+}
+
+function isMobileDevice() {
+  return window.matchMedia("(max-width: 820px)").matches ||
+    /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+}
+
+function loadExternalScript(id, src, readyCheck) {
+  if (readyCheck()) return Promise.resolve();
+
+  return new Promise((resolve, reject) => {
+    const existing = document.getElementById(id);
+
+    if (existing) {
+      existing.addEventListener("load", () => readyCheck() ? resolve() : reject(new Error("Library unavailable")), {once: true});
+      existing.addEventListener("error", () => reject(new Error("Library load failed")), {once: true});
+
+      if (readyCheck()) resolve();
+      return;
+    }
+
+    const element = document.createElement("script");
+    element.id = id;
+    element.src = src;
+    element.async = true;
+
+    element.addEventListener("load", () => {
+      if (readyCheck()) resolve();
+      else reject(new Error("Library unavailable after load"));
+    }, {once: true});
+
+    element.addEventListener("error", () => reject(new Error(`无法加载 ${src}`)), {once: true});
+    document.head.append(element);
+  });
+}
+
+async function ensurePdfLibraries() {
+  await loadExternalScript(
+    "html2canvas-library",
+    pdfLibraryUrls.html2canvas,
+    () => typeof window.html2canvas === "function"
+  );
+
+  await loadExternalScript(
+    "jspdf-library",
+    pdfLibraryUrls.jspdf,
+    () => Boolean(window.jspdf && window.jspdf.jsPDF)
+  );
+}
+
+function setPdfProgress(percent, message) {
+  const bar = document.getElementById("pdf-progress-bar");
+  const textEl = document.getElementById("pdf-progress-text");
+  const messageEl = document.getElementById("pdf-export-message");
+
+  const value = Math.max(0, Math.min(100, Math.round(percent)));
+  if (bar) bar.style.width = `${value}%`;
+  if (textEl) textEl.textContent = `${value}%`;
+  if (messageEl && message) messageEl.textContent = message;
+}
+
+function showPdfOverlay() {
+  const overlay = document.getElementById("pdf-export-overlay");
+  const spinner = document.getElementById("pdf-spinner");
+  const title = document.getElementById("pdf-export-title");
+  const openLink = document.getElementById("pdf-open-link");
+  const close = document.getElementById("pdf-close-button");
+
+  if (overlay) overlay.hidden = false;
+  if (spinner) spinner.hidden = false;
+  if (title) title.textContent = "正在生成 PDF";
+  if (openLink) {
+    openLink.hidden = true;
+    openLink.removeAttribute("href");
+  }
+  if (close) close.hidden = true;
+
+  setPdfProgress(0, "正在准备 A4 页面，请稍候……");
+}
+
+function finishPdfOverlay({message, blobUrl, ios = false}) {
+  const spinner = document.getElementById("pdf-spinner");
+  const title = document.getElementById("pdf-export-title");
+  const openLink = document.getElementById("pdf-open-link");
+  const close = document.getElementById("pdf-close-button");
+
+  if (spinner) spinner.hidden = true;
+  if (title) title.textContent = ios ? "PDF 已生成" : "PDF 已生成 / 已开始下载";
+
+  setPdfProgress(100, message);
+
+  if (openLink && blobUrl) {
+    openLink.href = blobUrl;
+    openLink.hidden = false;
+    openLink.textContent = ios ? "打开 PDF → 分享 → 存储到文件" : "打开生成的 PDF";
+  }
+
+  if (close) close.hidden = false;
+}
+
+function failPdfOverlay(error) {
+  const spinner = document.getElementById("pdf-spinner");
+  const title = document.getElementById("pdf-export-title");
+  const close = document.getElementById("pdf-close-button");
+
+  if (spinner) spinner.hidden = true;
+  if (title) title.textContent = "PDF 生成失败";
+  if (close) close.hidden = false;
+
+  setPdfProgress(
+    0,
+    "无法加载 PDF 组件或设备内存不足。可以关闭此窗口后使用“系统打印 / 桌面 PDF”作为备用。"
+  );
+
+  console.error("PDF export failed:", error);
+}
+
+function safePdfFilename() {
+  const name = (data.basics && data.basics.name ? data.basics.name : "resume")
+    .trim()
+    .replace(/[\\/:*?"<>|]+/g, "_")
+    .replace(/\s+/g, "_");
+
+  return `${name || "resume"}_resume.pdf`;
+}
+
+function triggerBlobDownload(blobUrl, filename) {
+  const anchor = document.createElement("a");
+  anchor.href = blobUrl;
+  anchor.download = filename;
+  anchor.style.display = "none";
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+}
+
+async function waitForResumeRender() {
+  renderResume();
+
+  await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+  if (document.fonts && document.fonts.ready) {
+    try { await document.fonts.ready; } catch (_) {}
+  }
+
+  await new Promise((resolve) => requestAnimationFrame(resolve));
+}
+
+async function downloadPdf() {
+  // Close editor so it can never be captured accidentally.
+  closeEditor();
+
+  const ios = isIOSDevice();
+
+  // iOS blocks window.open after asynchronous work, so reserve a tab during
+  // the original click event. It will later receive the generated PDF URL.
+  let iosPreviewWindow = null;
+  if (ios) {
+    try {
+      iosPreviewWindow = window.open("", "_blank");
+      if (iosPreviewWindow) {
+        iosPreviewWindow.document.write(
+          '<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1">' +
+          '<title>正在生成 PDF</title>' +
+          '<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:32px;line-height:1.7">' +
+          '<h2>正在生成 PDF…</h2><p>请保留此页面，生成完成后会自动打开 PDF。</p></div>'
+        );
+      }
+    } catch (_) {}
+  }
+
+  showPdfOverlay();
+
+  try {
+    setPdfProgress(4, "正在加载移动端 PDF 组件……");
+    await ensurePdfLibraries();
+
+    setPdfProgress(10, "正在重新计算 A4 分页……");
+    await waitForResumeRender();
+
+    const pages = [...document.querySelectorAll("#resume-pages .resume-page")];
+    if (!pages.length) throw new Error("No resume pages found.");
+
+    const {jsPDF} = window.jspdf;
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+      compress: true
+    });
+
+    // Mobile devices have tighter canvas memory limits.
+    const mobile = isMobileDevice();
+    let scale = mobile ? 1.45 : 1.8;
+
+    if (pages.length >= 5) scale = mobile ? 1.2 : 1.55;
+    if (pages.length >= 8) scale = mobile ? 1.05 : 1.35;
+
+    for (let index = 0; index < pages.length; index += 1) {
+      const progressStart = 12 + (index / pages.length) * 80;
+      setPdfProgress(
+        progressStart,
+        `正在生成第 ${index + 1} / ${pages.length} 页……`
+      );
+
+      const canvas = await window.html2canvas(pages[index], {
+        scale,
+        backgroundColor: "#ffffff",
+        logging: false,
+        useCORS: true,
+        allowTaint: false,
+        imageTimeout: 10000,
+        removeContainer: true
+      });
+
+      const imageData = canvas.toDataURL("image/jpeg", 0.94);
+
+      if (index > 0) {
+        pdf.addPage("a4", "portrait");
+      }
+
+      pdf.addImage(imageData, "JPEG", 0, 0, 210, 297, undefined, "FAST");
+
+      // Drop the backing canvas as early as possible to reduce mobile memory.
+      canvas.width = 1;
+      canvas.height = 1;
+    }
+
+    setPdfProgress(95, "正在封装 PDF 文件……");
+
+    const blob = pdf.output("blob");
+    const blobUrl = URL.createObjectURL(blob);
+    const filename = safePdfFilename();
+
+    if (ios) {
+      if (iosPreviewWindow && !iosPreviewWindow.closed) {
+        iosPreviewWindow.location.href = blobUrl;
+      }
+
+      finishPdfOverlay({
+        ios: true,
+        blobUrl,
+        message: "iPhone / iPad：PDF 已生成。打开 PDF 后点击系统“分享”按钮，再选择“存储到文件”即可保存。"
+      });
+    } else {
+      triggerBlobDownload(blobUrl, filename);
+
+      finishPdfOverlay({
+        ios: false,
+        blobUrl,
+        message: mobile
+          ? "PDF 已生成并尝试下载。如果浏览器没有自动下载，请点击下面的“打开生成的 PDF”。"
+          : "PDF 已生成，下载已开始。"
+      });
+    }
+
+    // Keep the URL long enough for mobile preview/share flows.
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 5 * 60 * 1000);
+  } catch (error) {
+    if (iosPreviewWindow && !iosPreviewWindow.closed) {
+      try { iosPreviewWindow.close(); } catch (_) {}
+    }
+    failPdfOverlay(error);
+  }
+}
+
+
 /* =========================================================
    Actions
    ========================================================= */
@@ -984,9 +1268,20 @@ function bindActions() {
     });
   });
 
+  document.querySelectorAll('[data-action="download-pdf"]').forEach((button) => {
+    button.addEventListener("click", downloadPdf);
+  });
+
   document.querySelectorAll('[data-action="print"]').forEach((button) => {
     button.addEventListener("click", () => window.print());
   });
+
+  const pdfCloseButton = document.getElementById("pdf-close-button");
+  if (pdfCloseButton) {
+    pdfCloseButton.addEventListener("click", () => {
+      document.getElementById("pdf-export-overlay").hidden = true;
+    });
+  }
 
   document.querySelectorAll('[data-action="download-json"]').forEach((button) => {
     button.addEventListener("click", downloadJson);

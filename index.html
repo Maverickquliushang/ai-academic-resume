@@ -21,7 +21,8 @@
       <label class="action-button secondary" for="avatar-upload">上传头像</label>
       <input id="avatar-upload" type="file" accept="image/*" hidden />
       <button class="action-button secondary" data-action="clear-avatar">恢复头像占位</button>
-      <button class="action-button secondary" data-action="print">打印 / 导出 PDF</button>
+      <button class="action-button primary mobile-pdf-button" data-action="download-pdf">⬇️ 下载 PDF</button>
+      <button class="action-button secondary" data-action="print">系统打印 / 桌面 PDF</button>
       <button class="action-button secondary" data-action="download-json">下载 JSON 数据</button>
       <button class="action-button secondary" data-action="download-js">下载 resume-data.js</button>
       <label class="action-button secondary" for="data-import">导入 JSON 数据</label>
@@ -73,6 +74,21 @@
       <button type="button" class="editor-footer-button primary" data-action="download-js">下载 resume-data.js</button>
     </footer>
   </aside>
+
+
+  <div class="pdf-export-overlay" id="pdf-export-overlay" hidden>
+    <div class="pdf-export-card" role="status" aria-live="polite">
+      <div class="pdf-spinner" id="pdf-spinner"></div>
+      <h3 id="pdf-export-title">正在生成 PDF</h3>
+      <p id="pdf-export-message">正在准备 A4 页面，请稍候……</p>
+      <div class="pdf-progress-track">
+        <div class="pdf-progress-bar" id="pdf-progress-bar"></div>
+      </div>
+      <p class="pdf-progress-text" id="pdf-progress-text">0%</p>
+      <a class="pdf-open-link" id="pdf-open-link" href="#" target="_blank" rel="noopener" hidden>打开 PDF</a>
+      <button type="button" class="pdf-close-button" id="pdf-close-button" hidden>关闭</button>
+    </div>
+  </div>
 
   <script src="resume-data.js"></script>
   <script src="script.js"></script>

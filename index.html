@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI Academic Resume - 数据驱动的 A4 学术简历模板" />
+  <title>AI Academic Resume</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <aside class="control-panel">
+    <div class="control-inner">
+      <p class="eyebrow">HTML Resume</p>
+      <h1>AI 可读、可改、可投递的学术简历</h1>
+      <p class="control-desc">
+        页面由 <code>resume-data.js</code> 中的结构化数据驱动。
+        修改内容优先编辑数据文件，修改视觉样式编辑 <code>styles.css</code>。
+      </p>
+
+      <label class="action-button secondary" for="avatar-upload">上传头像</label>
+      <input id="avatar-upload" type="file" accept="image/*" hidden />
+      <button class="action-button secondary" data-action="clear-avatar">恢复头像占位</button>
+      <button class="action-button primary" data-action="print">打印 / 导出 PDF</button>
+      <button class="action-button secondary" data-action="copy-markdown">复制 Markdown</button>
+      <button class="action-button secondary" data-action="copy-json">复制 JSON</button>
+
+      <div class="control-note">
+        <strong>打印建议</strong>
+        <span>A4 / 边距无 / 开启背景图形</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="workspace">
+
+    <!-- Page 1 -->
+    <article class="resume-page page-one">
+      <header class="resume-header">
+        <div class="resume-heading">
+          <p class="resume-kicker">Academic Resume</p>
+          <h2 id="candidate-name"></h2>
+          <p id="candidate-target" class="candidate-target"></p>
+          <p id="candidate-summary" class="candidate-summary"></p>
+        </div>
+
+        <div class="avatar-box" aria-label="头像">
+          <img id="candidate-avatar" alt="candidate avatar" hidden />
+          <div id="avatar-fallback" class="avatar-fallback">简</div>
+        </div>
+      </header>
+
+      <section class="info-grid" id="personal-info"></section>
+
+      <section class="resume-section">
+        <div class="section-heading">
+          <h3>教育经历</h3>
+          <span>Education</span>
+        </div>
+        <div data-list="education" class="education-list"></div>
+      </section>
+
+      <section class="resume-section">
+        <div class="section-heading">
+          <h3>主要论文</h3>
+          <span>Selected Publications</span>
+        </div>
+        <p id="publication-summary" class="section-lead"></p>
+        <div data-list="publications" class="publication-list"></div>
+      </section>
+
+      <footer class="page-footer">
+        <span>AI Academic Resume</span>
+        <span>01 / 02</span>
+      </footer>
+    </article>
+
+    <!-- Page 2 -->
+    <article class="resume-page">
+      <section class="resume-section first-section">
+        <div class="section-heading">
+          <h3>其他论文</h3>
+          <span>Additional Publications</span>
+        </div>
+        <div data-list="otherPublications" class="other-publication-list"></div>
+      </section>
+
+      <section class="resume-section">
+        <div class="section-heading">
+          <h3>项目经历</h3>
+          <span>Project Experience</span>
+        </div>
+        <div data-list="projects" class="project-list"></div>
+      </section>
+
+      <section class="resume-section">
+        <div class="section-heading">
+          <h3>专业技能</h3>
+          <span>Professional Skills</span>
+        </div>
+        <div data-list="skills" class="skill-list"></div>
+      </section>
+
+      <footer class="page-footer">
+        <span>AI Academic Resume</span>
+        <span>02 / 02</span>
+      </footer>
+    </article>
+
+  </main>
+
+  <script src="resume-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -6,22 +6,39 @@
 
 无需构建工具 · 网页直接编辑 · Section 自由管理 · 智能 A4 分页 · 一键导出 PDF
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-2ea44f?logo=github)](https://maverickquliushang.github.io/ai-academic-resume/)
-[![GitHub Pages](https://img.shields.io/github/actions/workflow/status/Maverickquliushang/ai-academic-resume/deploy-pages.yml?branch=main&label=Pages&logo=github)](https://github.com/Maverickquliushang/ai-academic-resume/actions)
-[![HTML](https://img.shields.io/badge/HTML5-static-E34F26?logo=html5&logoColor=white)](#)
-[![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-F7DF1E?logo=javascript&logoColor=111)](#)
-[![No Build](https://img.shields.io/badge/build-none-blue)](#)
+<br>
 
-[在线体验](https://maverickquliushang.github.io/ai-academic-resume/) ·
-[快速开始](#-快速开始) ·
+<a href="https://maverickquliushang.github.io/ai-academic-resume/">
+  <img src="https://img.shields.io/badge/ONLINE_DEMO-OPEN_NOW-2ea44f?style=for-the-badge&logo=githubpages&logoColor=white" alt="Open Live Demo">
+</a>
+<a href="https://github.com/Maverickquliushang/ai-academic-resume">
+  <img src="https://img.shields.io/badge/VIEW_SOURCE-GITHUB-181717?style=for-the-badge&logo=github&logoColor=white" alt="View Source">
+</a>
+
+### 🚀 [点击这里直接在线使用 →](https://maverickquliushang.github.io/ai-academic-resume/)
+
+**无需下载 · 无需安装 · 打开网页即可编辑并导出 PDF**
+
+<br>
+
+![HTML](https://img.shields.io/badge/HTML5-static-E34F26?logo=html5&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-F7DF1E?logo=javascript&logoColor=111)
+![No Build](https://img.shields.io/badge/build-none-blue)
+
+[功能介绍](#-核心特性) ·
 [可视化编辑](#-可视化编辑) ·
 [自动分页](#-智能-a4-分页) ·
+[快速开始](#-快速开始) ·
 [部署到 GitHub Pages](#-部署到-github-pages)
 
 </div>
 
 ![AI Academic Resume Preview](./assets/section-editor-preview.png)
+
+
 ![AI Academic Resume Preview](./assets/smart-pagination-preview.png)
+
+
 ![AI Academic Resume Preview](./assets/preview.png)
 ---
 

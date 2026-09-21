@@ -13,17 +13,24 @@
       <p class="eyebrow">HTML Resume</p>
       <h1>AI 可读、可改、可投递的学术简历</h1>
       <p class="control-desc">
-        页面由 <code>resume-data.js</code> 中的结构化数据驱动。
-        修改内容优先编辑数据文件，修改视觉样式编辑 <code>styles.css</code>。
+        不需要改代码。点击 <strong>可视化编辑简历</strong>，即可在网页中修改、增加或删除内容；修改会自动保存在当前浏览器。
       </p>
 
+      <button class="action-button primary editor-launch" data-action="edit">✏️ 可视化编辑简历</button>
       <label class="action-button secondary" for="avatar-upload">上传头像</label>
       <input id="avatar-upload" type="file" accept="image/*" hidden />
       <button class="action-button secondary" data-action="clear-avatar">恢复头像占位</button>
-      <button class="action-button primary" data-action="print">打印 / 导出 PDF</button>
-      <button class="action-button secondary" data-action="copy-markdown">复制 Markdown</button>
-      <button class="action-button secondary" data-action="copy-json">复制 JSON</button>
+      <button class="action-button secondary" data-action="print">打印 / 导出 PDF</button>
+      <button class="action-button secondary" data-action="download-json">下载 JSON 数据</button>
+      <button class="action-button secondary" data-action="download-js">下载 resume-data.js</button>
+      <label class="action-button secondary" for="data-import">导入 JSON 数据</label>
+      <input id="data-import" type="file" accept="application/json,.json" hidden />
+      <button class="action-button ghost" data-action="reset-data">恢复示例数据</button>
 
+      <div class="control-note">
+        <strong>自动保存</strong>
+        <span>编辑内容保存在浏览器本地。需要同步到 GitHub 时，可下载新的 <code>resume-data.js</code> 后替换仓库文件。</span>
+      </div>
       <div class="control-note">
         <strong>打印建议</strong>
         <span>A4 / 边距无 / 开启背景图形</span>
@@ -107,6 +114,44 @@
     </article>
 
   </main>
+
+
+  <!-- Visual editor -->
+  <div class="editor-backdrop" id="editor-backdrop" hidden></div>
+  <aside class="editor-drawer" id="editor-drawer" aria-hidden="true">
+    <header class="editor-header">
+      <div>
+        <p class="editor-eyebrow">VISUAL EDITOR</p>
+        <h2>编辑简历</h2>
+        <p>表单修改会实时同步到右侧简历，并自动保存到当前浏览器。</p>
+      </div>
+      <button class="icon-button" data-action="close-editor" aria-label="关闭编辑器">×</button>
+    </header>
+
+    <nav class="editor-tabs" id="editor-tabs">
+      <button class="editor-tab active" data-editor-tab="basics">基本信息</button>
+      <button class="editor-tab" data-editor-tab="education">教育</button>
+      <button class="editor-tab" data-editor-tab="publications">主要论文</button>
+      <button class="editor-tab" data-editor-tab="otherPublications">其他论文</button>
+      <button class="editor-tab" data-editor-tab="projects">项目</button>
+      <button class="editor-tab" data-editor-tab="skills">技能</button>
+    </nav>
+
+    <div class="editor-body">
+      <section class="editor-pane active" data-editor-pane="basics"></section>
+      <section class="editor-pane" data-editor-pane="education"></section>
+      <section class="editor-pane" data-editor-pane="publications"></section>
+      <section class="editor-pane" data-editor-pane="otherPublications"></section>
+      <section class="editor-pane" data-editor-pane="projects"></section>
+      <section class="editor-pane" data-editor-pane="skills"></section>
+    </div>
+
+    <footer class="editor-footer">
+      <span class="save-status" id="save-status">已自动保存</span>
+      <button class="editor-footer-button" data-action="download-json">下载 JSON</button>
+      <button class="editor-footer-button primary" data-action="download-js">下载 resume-data.js</button>
+    </footer>
+  </aside>
 
   <script src="resume-data.js"></script>
   <script src="script.js"></script>

@@ -310,3 +310,48 @@ Page 2
 **Made for researchers, AI engineers, and students who prefer a clean resume workflow.**
 
 </div>
+
+
+## 在网页里直接编辑简历
+
+![Visual Editor Preview](./assets/editor-preview.png)
+
+
+打开 `index.html` 或在线 Demo 后，点击左侧：
+
+```text
+✏️ 可视化编辑简历
+```
+
+即可打开编辑器，不需要修改任何 JavaScript 代码。
+
+编辑器支持：
+
+- 修改基本信息、研究方向、个人简介和奖项
+- 新增 / 删除教育经历
+- 新增 / 删除主要论文
+- 新增 / 删除其他论文
+- 新增 / 删除项目经历
+- 新增 / 删除技能
+- 修改时右侧简历实时刷新
+- 自动保存到浏览器 `localStorage`
+- 下载当前数据为 `resume-data.json`
+- 下载新的 `resume-data.js`
+- 导入之前导出的 JSON 数据
+- 一键恢复示例数据
+
+### 如何把网页里的修改同步到 GitHub？
+
+GitHub Pages 是静态网站，网页本身无法直接写回你的 GitHub 仓库。因此修改完成后点击：
+
+```text
+下载 resume-data.js
+```
+
+然后在 GitHub 仓库中用这个新文件替换原来的 `resume-data.js` 并提交即可。
+
+如果只是自己在同一台电脑浏览和打印，数据已经自动保存在浏览器中，不需要执行上述步骤。
+
+### 高级用户
+
+你仍然可以直接编辑 `resume-data.js`。页面首次打开时会以该文件中的数据作为默认值。

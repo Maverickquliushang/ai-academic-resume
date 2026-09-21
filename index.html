@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="AI Academic Resume - 数据驱动的 A4 学术简历模板" />
+  <meta name="description" content="AI Academic Resume - 可视化编辑、Section 管理、智能 A4 分页" />
   <title>AI Academic Resume</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -11,12 +11,13 @@
   <aside class="control-panel">
     <div class="control-inner">
       <p class="eyebrow">HTML Resume</p>
-      <h1>AI 可读、可改、可投递的学术简历</h1>
+      <h1>可视化编辑 · Section 管理 · 自动分页</h1>
       <p class="control-desc">
-        不需要改代码。点击 <strong>可视化编辑简历</strong>，即可在网页中修改、增加或删除内容；修改会自动保存在当前浏览器。
+        无需修改代码。可以直接编辑内容、新增/删除 Section、新增实习/项目/论文条目，
+        页面会自动重新分页。
       </p>
 
-      <button class="action-button primary editor-launch" data-action="edit">✏️ 可视化编辑简历</button>
+      <button class="action-button primary" data-action="edit">✏️ 可视化编辑简历</button>
       <label class="action-button secondary" for="avatar-upload">上传头像</label>
       <input id="avatar-upload" type="file" accept="image/*" hidden />
       <button class="action-button secondary" data-action="clear-avatar">恢复头像占位</button>
@@ -28,128 +29,48 @@
       <button class="action-button ghost" data-action="reset-data">恢复示例数据</button>
 
       <div class="control-note">
-        <strong>自动保存</strong>
-        <span>编辑内容保存在浏览器本地。需要同步到 GitHub 时，可下载新的 <code>resume-data.js</code> 后替换仓库文件。</span>
+        <strong>自动分页</strong>
+        <span>当前共 <b id="page-count">1</b> 页。完整条目放不下时自动移动到下一页。</span>
       </div>
+
       <div class="control-note">
-        <strong>打印建议</strong>
-        <span>A4 / 边距无 / 开启背景图形</span>
+        <strong>网页编辑</strong>
+        <span>支持 Section 新增 / 删除 / 改名，以及教育、论文、实习、项目和技能条目无限新增。</span>
       </div>
     </div>
   </aside>
 
   <main class="workspace">
-
-    <!-- Page 1 -->
-    <article class="resume-page page-one">
-      <header class="resume-header">
-        <div class="resume-heading">
-          <p class="resume-kicker">Academic Resume</p>
-          <h2 id="candidate-name"></h2>
-          <p id="candidate-target" class="candidate-target"></p>
-          <p id="candidate-summary" class="candidate-summary"></p>
-        </div>
-
-        <div class="avatar-box" aria-label="头像">
-          <img id="candidate-avatar" alt="candidate avatar" hidden />
-          <div id="avatar-fallback" class="avatar-fallback">简</div>
-        </div>
-      </header>
-
-      <section class="info-grid" id="personal-info"></section>
-
-      <section class="resume-section">
-        <div class="section-heading">
-          <h3>教育经历</h3>
-          <span>Education</span>
-        </div>
-        <div data-list="education" class="education-list"></div>
-      </section>
-
-      <section class="resume-section">
-        <div class="section-heading">
-          <h3>主要论文</h3>
-          <span>Selected Publications</span>
-        </div>
-        <p id="publication-summary" class="section-lead"></p>
-        <div data-list="publications" class="publication-list"></div>
-      </section>
-
-      <footer class="page-footer">
-        <span>AI Academic Resume</span>
-        <span>01 / 02</span>
-      </footer>
-    </article>
-
-    <!-- Page 2 -->
-    <article class="resume-page">
-      <section class="resume-section first-section">
-        <div class="section-heading">
-          <h3>其他论文</h3>
-          <span>Additional Publications</span>
-        </div>
-        <div data-list="otherPublications" class="other-publication-list"></div>
-      </section>
-
-      <section class="resume-section">
-        <div class="section-heading">
-          <h3>项目经历</h3>
-          <span>Project Experience</span>
-        </div>
-        <div data-list="projects" class="project-list"></div>
-      </section>
-
-      <section class="resume-section">
-        <div class="section-heading">
-          <h3>专业技能</h3>
-          <span>Professional Skills</span>
-        </div>
-        <div data-list="skills" class="skill-list"></div>
-      </section>
-
-      <footer class="page-footer">
-        <span>AI Academic Resume</span>
-        <span>02 / 02</span>
-      </footer>
-    </article>
-
+    <div id="resume-pages" class="resume-pages" aria-live="polite"></div>
   </main>
 
-
-  <!-- Visual editor -->
   <div class="editor-backdrop" id="editor-backdrop" hidden></div>
+
   <aside class="editor-drawer" id="editor-drawer" aria-hidden="true">
     <header class="editor-header">
       <div>
         <p class="editor-eyebrow">VISUAL EDITOR</p>
         <h2>编辑简历</h2>
-        <p>表单修改会实时同步到右侧简历，并自动保存到当前浏览器。</p>
+        <p>修改会实时预览、自动保存，并立即重新计算分页。</p>
       </div>
-      <button class="icon-button" data-action="close-editor" aria-label="关闭编辑器">×</button>
+      <button type="button" class="icon-button" data-action="close-editor" aria-label="关闭">×</button>
     </header>
 
     <nav class="editor-tabs" id="editor-tabs">
-      <button class="editor-tab active" data-editor-tab="basics">基本信息</button>
-      <button class="editor-tab" data-editor-tab="education">教育</button>
-      <button class="editor-tab" data-editor-tab="publications">主要论文</button>
-      <button class="editor-tab" data-editor-tab="otherPublications">其他论文</button>
-      <button class="editor-tab" data-editor-tab="projects">项目</button>
-      <button class="editor-tab" data-editor-tab="skills">技能</button>
+      <button type="button" class="editor-tab active" data-editor-tab="basics">基本信息</button>
+      <button type="button" class="editor-tab" data-editor-tab="sections">模块管理</button>
     </nav>
 
     <div class="editor-body">
       <section class="editor-pane active" data-editor-pane="basics"></section>
-      <section class="editor-pane" data-editor-pane="education"></section>
-      <section class="editor-pane" data-editor-pane="publications"></section>
-      <section class="editor-pane" data-editor-pane="otherPublications"></section>
-      <section class="editor-pane" data-editor-pane="projects"></section>
-      <section class="editor-pane" data-editor-pane="skills"></section>
+      <section class="editor-pane" data-editor-pane="sections"></section>
+      <div id="dynamic-editor-panes"></div>
     </div>
 
     <footer class="editor-footer">
       <span class="save-status" id="save-status">已自动保存</span>
-      <button class="editor-footer-button" data-action="download-json">下载 JSON</button>
-      <button class="editor-footer-button primary" data-action="download-js">下载 resume-data.js</button>
+      <button type="button" class="editor-footer-button" data-action="download-json">下载 JSON</button>
+      <button type="button" class="editor-footer-button primary" data-action="download-js">下载 resume-data.js</button>
     </footer>
   </aside>
 

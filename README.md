@@ -2,73 +2,294 @@
 
 # AI Academic Resume
 
-**A clean, data-driven A4 HTML resume template for academic, AI, algorithm, and research roles.**
+**一个面向学术、AI、算法与研究型岗位的可视化 HTML 简历模板**
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-2563a6?style=flat-square&logo=github)](https://maverickquliushang.github.io/ai-academic-resume/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](./LICENSE)
-[![HTML](https://img.shields.io/badge/HTML5-static-E34F26?style=flat-square&logo=html5&logoColor=white)](#)
-[![CSS](https://img.shields.io/badge/CSS3-A4%20print-1572B6?style=flat-square&logo=css3&logoColor=white)](#)
-[![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-F7DF1E?style=flat-square&logo=javascript&logoColor=111)](#)
-[![No Build](https://img.shields.io/badge/build-none-6b7280?style=flat-square)](#)
+无需构建工具 · 网页直接编辑 · Section 自由管理 · 智能 A4 分页 · 一键导出 PDF
 
-[在线预览](https://maverickquliushang.github.io/ai-academic-resume/) · [快速开始](#-快速开始) · [修改简历](#-修改简历内容) · [导出-pdf](#-导出-pdf)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-2ea44f?logo=github)](https://maverickquliushang.github.io/ai-academic-resume/)
+[![GitHub Pages](https://img.shields.io/github/actions/workflow/status/Maverickquliushang/ai-academic-resume/deploy-pages.yml?branch=main&label=Pages&logo=github)](https://github.com/Maverickquliushang/ai-academic-resume/actions)
+[![HTML](https://img.shields.io/badge/HTML5-static-E34F26?logo=html5&logoColor=white)](#)
+[![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-F7DF1E?logo=javascript&logoColor=111)](#)
+[![No Build](https://img.shields.io/badge/build-none-blue)](#)
+
+[在线体验](https://maverickquliushang.github.io/ai-academic-resume/) ·
+[快速开始](#-快速开始) ·
+[可视化编辑](#-可视化编辑) ·
+[自动分页](#-智能-a4-分页) ·
+[部署到 GitHub Pages](#-部署到-github-pages)
 
 </div>
 
+![AI Academic Resume Preview](./assets/section-editor-preview.png)
+![AI Academic Resume Preview](./assets/smart-pagination-preview.png)
 ![AI Academic Resume Preview](./assets/preview.png)
+---
 
 ## ✨ 项目简介
 
-**AI Academic Resume** 是一个面向 **学术 / AI / 算法 / 研究型岗位** 的数据驱动 HTML 简历模板。
+**AI Academic Resume** 是一个数据驱动、纯前端的学术简历模板，适合论文、项目、实习和科研经历较多的用户。
 
-它将简历内容与页面样式分离：日常维护只需要修改 `resume-data.js`，无需反复调整 HTML。项目完全由原生 HTML、CSS 和 JavaScript 构成，无需 Node.js、npm 或任何构建工具，可以直接在浏览器中运行，并通过浏览器原生打印功能导出 A4 PDF。
+和传统“修改 HTML / JS 源码”的简历模板不同，这个项目提供了一个内置的 **可视化简历编辑器**。打开网页即可修改个人信息、增加论文、添加实习经历、调整 Section 顺序，并实时查看最终 A4 简历效果。
 
-> 仓库中的姓名、联系方式、学校、论文、会议、项目与奖项均为虚构示例，仅用于展示模板结构和排版效果。
+整个项目只使用：
 
-## 📌 目录
+```text
+HTML + CSS + Vanilla JavaScript
+```
 
-- [项目简介](#-项目简介)
-- [主要特性](#-主要特性)
-- [效果预览](#-效果预览)
-- [目录结构](#-目录结构)
-- [快速开始](#-快速开始)
-- [修改简历内容](#-修改简历内容)
-- [导出 PDF](#-导出-pdf)
-- [GitHub Pages 在线 Demo](#-github-pages-在线-demo)
-- [头像功能](#-头像功能)
-- [主题与样式](#-主题与样式)
-- [分页说明](#-分页说明)
-- [隐私说明](#-隐私说明)
-- [License](#-license)
+不需要安装 Node.js，不需要 `npm install`，也没有后端服务。
 
-## 🚀 主要特性
+---
 
-- **数据驱动**：简历信息集中维护在 `resume-data.js`
-- **A4 原生排版**：针对浏览器打印与 PDF 导出优化
-- **双页学术结构**：适合论文、项目较多的研究型简历
-- **零构建依赖**：无需 npm、Node.js 或框架
-- **本地头像**：头像仅保存在浏览器本地，不上传服务器
-- **一键导出 PDF**：直接调用浏览器打印功能
-- **复制 Markdown / JSON**：便于迁移到其他简历系统或 AI 工具
-- **响应式预览**：兼容桌面端与移动端浏览
-- **GitHub Pages**：仓库内置自动部署工作流
-- **隐私友好**：模板本身不包含统计代码、网络请求或真实个人数据
+## 🚀 核心特性
 
-## 🖼️ 效果预览
+| 功能 | 说明 |
+| --- | --- |
+| ✏️ 可视化编辑 | 直接在网页中修改简历，不需要手改 `resume-data.js` |
+| 🧩 Section 管理 | Section 可新增、删除、改名、上移、下移 |
+| ➕ 无限新增内容 | 教育、论文、实习、项目、技能均可继续增加 |
+| 💼 实习经历 | 默认提供 `Internship Experience` Section |
+| 📄 智能 A4 分页 | 根据实际内容自动生成 1 / 2 / 3 / N 页 |
+| ✂️ 防文字截断 | 当前页放不下时，完整条目自动移动到下一页 |
+| 🔢 动态页码 | 自动生成 `01 / N`、`02 / N`…… |
+| 💾 本地自动保存 | 修改内容自动保存到浏览器 `localStorage` |
+| 📥 数据导入导出 | 支持 JSON 导入 / 导出 |
+| 📦 数据文件导出 | 可直接生成新的 `resume-data.js` |
+| 🖼️ 自定义头像 | 支持浏览器本地上传头像 |
+| 🖨️ PDF 导出 | Chrome / Edge 可直接打印成 A4 PDF |
+| 🌐 GitHub Pages | 自带静态站点部署工作流 |
+| 🔒 纯本地运行 | 不上传头像和简历内容，不依赖第三方 API |
 
-### 编辑与导出面板
+---
 
-左侧控制面板提供头像上传、PDF 导出以及 Markdown / JSON 复制功能。
+## 🖥️ 在线 Demo
 
-![Control Panel](./assets/feature-controls.png)
+**GitHub Pages：**
 
-### A4 学术简历布局
+https://maverickquliushang.github.io/ai-academic-resume/
 
-默认采用两页 A4：第一页突出教育背景与主要论文，第二页展示其他论文、项目经历与专业技能。
+打开 Demo 后，点击左侧：
 
-![Resume Pages](./assets/feature-pages.png)
+```text
+✏️ 可视化编辑简历
+```
 
-## 📁 目录结构
+即可开始编辑。
+
+> 浏览器中修改的数据默认只保存在本机。如果希望把修改后的默认内容同步回 GitHub，请使用“下载 `resume-data.js`”，然后替换仓库中的同名文件。
+
+---
+
+## ✏️ 可视化编辑
+
+编辑器目前分为两个层级：
+
+### 1. 基本信息
+
+可以直接修改：
+
+- 姓名
+- 手机号
+- 邮箱
+- 籍贯
+- 出生年月
+- 政治面貌
+- 现居地
+- 研究方向
+- 个人简介
+- 荣誉 / 奖项
+
+所有输入都会实时同步到右侧简历。
+
+### 2. Section 与内容
+
+每个 Section 都可以：
+
+```text
+修改中文标题
+修改英文副标题
+上移
+下移
+删除
+编辑内部内容
+```
+
+例如可以把：
+
+```text
+项目经历
+Project Experience
+```
+
+直接改成：
+
+```text
+科研项目
+Research Projects
+```
+
+---
+
+## 🧩 自定义 Section
+
+进入：
+
+```text
+可视化编辑简历
+→ 模块管理
+→ 新增 Section
+```
+
+可以自由创建新的简历模块。
+
+当前支持 5 种 Section 类型：
+
+| Section 类型 | 适用内容 |
+| --- | --- |
+| 经历 / 项目 / 实习 | 实习经历、科研经历、工作经历、项目经历、校园经历 |
+| 教育经历 | 本科、硕士、博士等教育信息 |
+| 详细论文 | 标题、会议、级别、作者身份、论文简介 |
+| 简洁论文 | 适合其他论文 / 参与论文列表 |
+| 技能 | 技术栈、工具、能力描述 |
+
+因此可以自由创建：
+
+```text
+实习经历
+科研经历
+开源经历
+竞赛经历
+校园经历
+工作经历
+代表性成果
+课程项目
+```
+
+---
+
+## 💼 实习经历
+
+模板默认提供：
+
+```text
+实习经历
+Internship Experience
+```
+
+每条实习包括：
+
+```text
+名称 / 单位 / 职位
+时间
+描述
+```
+
+例如：
+
+```text
+Example AI Company｜LLM Algorithm Intern
+2026.06 – 2026.09
+
+负责 RAG 检索优化、Prompt 设计和离线评测……
+```
+
+可以无限增加，也可以直接删除整个“实习经历” Section。
+
+---
+
+## 📄 智能 A4 分页
+
+早期版本使用固定两页或者按像素切割长页面，容易出现文字被从中间裁开的情况。
+
+当前版本采用 **Block-aware Pagination**：
+
+```text
+条目准备放入当前 A4 页面
+          ↓
+计算剩余空间
+          ↓
+     是否放得下？
+       /      \
+     是        否
+     ↓         ↓
+留在当前页   整条移到下一页
+```
+
+以下内容会作为完整分页单元：
+
+- 教育经历
+- 详细论文
+- 简洁论文
+- 实习 / 项目 / 工作经历
+- 技能条目
+
+因此不会出现：
+
+```text
+第一页：一行文字的上半部分
+第二页：同一行文字的下半部分
+```
+
+页面数量也不是固定的。
+
+例如：
+
+```text
+01 / 02
+02 / 02
+```
+
+新增内容后可能自动变成：
+
+```text
+01 / 04
+02 / 04
+03 / 04
+04 / 04
+```
+
+删除内容后页数也会自动减少。
+
+> 如果“某一个单独条目”本身就长到超过完整一页 A4，模板会给出提示，此时建议精简该条目的文字。
+
+---
+
+## 🏁 快速开始
+
+### 方法一：直接使用在线版
+
+打开：
+
+https://maverickquliushang.github.io/ai-academic-resume/
+
+然后点击：
+
+```text
+✏️ 可视化编辑简历
+```
+
+无需安装任何东西。
+
+### 方法二：下载到本地
+
+Clone：
+
+```bash
+git clone https://github.com/Maverickquliushang/ai-academic-resume.git
+cd ai-academic-resume
+```
+
+然后直接使用 Chrome / Edge 打开：
+
+```text
+index.html
+```
+
+即可。
+
+---
+
+## 📁 项目结构
 
 ```text
 ai-academic-resume/
@@ -76,9 +297,9 @@ ai-academic-resume/
 │   └── workflows/
 │       └── deploy-pages.yml
 ├── assets/
-│   ├── preview.png
-│   ├── feature-controls.png
-│   └── feature-pages.png
+│   ├── section-editor-preview.png
+│   ├── smart-pagination-preview.png
+│   └── ...
 ├── .gitignore
 ├── LICENSE
 ├── README.md
@@ -88,270 +309,230 @@ ai-academic-resume/
 └── styles.css
 ```
 
-核心文件职责：
+其中：
 
 | 文件 | 用途 |
 | --- | --- |
-| `resume-data.js` | 简历内容，日常更新主要修改这里 |
-| `index.html` | 页面结构与两页 A4 骨架 |
-| `styles.css` | 页面视觉、打印样式与响应式布局 |
-| `script.js` | 数据渲染、头像、复制与打印功能 |
-| `.github/workflows/deploy-pages.yml` | GitHub Pages 自动部署 |
+| `index.html` | 页面结构与可视化编辑器入口 |
+| `resume-data.js` | 默认简历数据 |
+| `script.js` | 编辑器、自动保存、Section 管理、智能分页 |
+| `styles.css` | A4 页面、编辑器、打印与响应式样式 |
+| `deploy-pages.yml` | GitHub Pages 自动部署 |
+| `assets/` | README 预览图 |
 
-## ⚡ 快速开始
+---
 
-### 方法一：直接下载
+## 💾 数据保存
 
-下载仓库后，直接用 Chrome / Edge 打开：
+### 浏览器自动保存
 
-```text
-index.html
-```
-
-无需安装任何依赖。
-
-### 方法二：Git 克隆
-
-```bash
-git clone https://github.com/Maverickquliushang/ai-academic-resume.git
-cd ai-academic-resume
-```
-
-然后直接打开 `index.html`。
-
-## ✏️ 修改简历内容
-
-绝大多数情况下，你只需要编辑：
+网页编辑后的数据会存储在：
 
 ```text
-resume-data.js
+localStorage
 ```
 
-### 基本信息
+因此刷新页面后仍然可以继续编辑。
 
-```javascript
-basics: {
-  name: "你的名字",
-  title: "人工智能 / 大模型方向",
-  phone: "138-0000-0000",
-  email: "your@email.com",
-  currentResidence: "上海"
-}
+这些数据：
+
+- 不会上传服务器
+- 不会提交到 GitHub
+- 不会被其他用户看到
+- 只存在当前浏览器
+
+### 导出 JSON
+
+可以点击：
+
+```text
+下载 JSON 数据
 ```
 
-### 新增论文
+保存一份可再次导入的简历数据。
 
-```javascript
-publications: [
-  {
-    title: "Your Paper Title",
-    venue: "Conference 2027",
-    level: "CCF A",
-    role: "First Author",
-    description: "简要概括论文的问题、方法与结果。"
-  }
-]
+### 导出 `resume-data.js`
+
+如果希望修改 GitHub Pages 的默认简历：
+
+```text
+编辑完成
+    ↓
+下载 resume-data.js
+    ↓
+上传到 GitHub
+    ↓
+替换旧 resume-data.js
+    ↓
+Commit changes
+    ↓
+GitHub Pages 自动重新部署
 ```
 
-### 新增项目
+---
 
-```javascript
-projects: [
-  {
-    title: "项目名称",
-    period: "2026.01 – 至今",
-    summary: "说明项目背景、你的职责、技术方案与结果。"
-  }
-]
+## 🖼️ 更换头像
+
+点击：
+
+```text
+上传头像
 ```
 
-### 修改技能
+图片会保存在浏览器本地。
 
-```javascript
-skills: [
-  "熟悉 Transformer、SFT、LoRA 与大模型训练流程。",
-  "熟悉 PyTorch、Transformers、LangChain 等框架。"
-]
+不想使用头像时点击：
+
+```text
+恢复头像占位
 ```
 
-修改完成后刷新 `index.html` 即可看到结果。
+即可。
+
+---
 
 ## 🖨️ 导出 PDF
 
-推荐使用 Chrome 或 Edge：
+推荐使用 Chrome 或 Edge。
 
-1. 打开 `index.html`
-2. 点击左侧 **打印 / 导出 PDF**
-3. 目标打印机选择 **保存为 PDF**
-4. 纸张选择 **A4**
-5. 边距选择 **无**
-6. 开启 **背景图形**
+点击：
 
-模板已经配置：
-
-```css
-@page {
-  size: A4;
-  margin: 0;
-}
+```text
+打印 / 导出 PDF
 ```
 
-页脚采用正常文档流布局，避免打印时覆盖正文。
+打印设置建议：
 
-## 🌐 GitHub Pages 在线 Demo
+```text
+目标：保存为 PDF
+纸张：A4
+边距：无
+背景图形：开启
+缩放：默认 / 100%
+```
 
-本仓库已经内置 GitHub Pages 自动部署工作流：
+最终页数会与网页中自动生成的 A4 页面数量一致。
+
+---
+
+## 🌐 部署到 GitHub Pages
+
+仓库已经包含：
 
 ```text
 .github/workflows/deploy-pages.yml
 ```
 
-发布步骤：
+上传代码后，进入 GitHub：
 
-1. 将仓库上传到 GitHub，仓库名建议使用 `ai-academic-resume`
-2. 确保默认分支为 `main`
-3. 打开 **Settings → Pages**
-4. 将 **Source** 设置为 **GitHub Actions**
-5. push 代码后等待 Actions 完成
+```text
+Settings
+→ Pages
+→ Build and deployment
+→ Source
+→ GitHub Actions
+```
 
-部署成功后，在线地址为：
+然后进入：
+
+```text
+Actions
+```
+
+等待：
+
+```text
+Deploy static resume demo to GitHub Pages
+```
+
+运行成功。
+
+默认 Demo 地址：
 
 ```text
 https://maverickquliushang.github.io/ai-academic-resume/
 ```
 
-## 🖼️ 头像功能
+---
 
-点击左侧 **上传头像** 可以选择本地图片。
+## 🎨 自定义样式
 
-头像通过浏览器 `localStorage` 保存：
-
-- 不会上传到服务器
-- 不会进入 GitHub 仓库
-- 不会修改 `resume-data.js`
-
-点击 **恢复头像占位** 即可清除本地头像。
-
-## 🎨 主题与样式
-
-主要主题色位于 `styles.css` 顶部：
+页面配色集中定义在 `styles.css`：
 
 ```css
 :root {
   --navy: #183153;
   --blue: #2563a6;
   --blue-soft: #edf5fc;
+  --ink: #182230;
+  --text: #344254;
 }
 ```
 
-你可以直接修改这些变量快速更换主题。
+修改这些变量即可快速更换整体主题。
 
-如果想调整字体大小、论文卡片间距或页面留白，也建议统一在 `styles.css` 中修改，不要将样式写入 `resume-data.js`。
+A4 页面尺寸为：
 
-## 📄 分页说明
-
-默认采用两页 A4：
-
-```text
-Page 1
-├── 基本信息
-├── 教育经历
-└── 主要论文
-
-Page 2
-├── 其他论文
-├── 项目经历
-└── 专业技能
+```css
+--page-width: 210mm;
+--page-height: 297mm;
 ```
 
-这种布局更适合论文与项目较多的研究型简历。
+---
 
-如果你的内容较少，可以删除第二页；如果内容更多，可以继续添加：
+## 🔒 隐私说明
 
-```html
-<article class="resume-page">
-  ...
-</article>
-```
+项目是纯静态网页：
 
-## 🔐 隐私说明
-
-模板本身：
-
-- 不包含真实个人信息
-- 不包含统计脚本
-- 不包含第三方 API
-- 不主动发送网络请求
+- 不包含后端
+- 不上传用户简历
 - 不上传头像
-- 不上传简历内容
+- 不包含统计代码
+- 不依赖远程 API
+- 编辑内容默认仅存储在浏览器本地
 
-所有简历渲染和头像处理均在浏览器本地完成。
+仓库内自带的示例：
+
+- 姓名
+- 联系方式
+- 学校
+- 论文
+- 项目
+- 实习
+- 奖项
+
+均为虚构数据。
+
+---
 
 ## 🤝 Contributing
 
-欢迎提交 Issue 或 Pull Request，例如：
+欢迎 Issue 和 Pull Request。
 
-- 新主题配色
-- 单页 / 三页布局
-- 英文版字段
-- 更灵活的打印分页
-- 更多 Academic CV 模块
+如果你希望增加新的 Section 类型、主题样式或编辑功能，可以：
 
-## 📄 License
+```bash
+git checkout -b feature/my-feature
+```
 
-本项目使用 [MIT License](./LICENSE)。
+修改后提交 Pull Request。
+
+比较适合贡献的方向包括：
+
+- 更多简历主题
+- Section 拖拽排序
+- 中英文双语简历
+- ATS 风格模板
+- LaTeX / Markdown 导出
+- 更完善的移动端编辑体验
+- 多套简历数据切换
 
 ---
 
 <div align="center">
 
-如果这个模板对你有帮助，欢迎 ⭐ Star。
+如果这个项目对你有帮助，欢迎 ⭐ Star。
 
-**Made for researchers, AI engineers, and students who prefer a clean resume workflow.**
+**[Live Demo](https://maverickquliushang.github.io/ai-academic-resume/) · [Back to Top](#ai-academic-resume)**
 
 </div>
-
-
-## 在网页里直接编辑简历
-
-![Visual Editor Preview](./assets/editor-preview.png)
-
-
-打开 `index.html` 或在线 Demo 后，点击左侧：
-
-```text
-✏️ 可视化编辑简历
-```
-
-即可打开编辑器，不需要修改任何 JavaScript 代码。
-
-编辑器支持：
-
-- 修改基本信息、研究方向、个人简介和奖项
-- 新增 / 删除教育经历
-- 新增 / 删除主要论文
-- 新增 / 删除其他论文
-- 新增 / 删除项目经历
-- 新增 / 删除技能
-- 修改时右侧简历实时刷新
-- 自动保存到浏览器 `localStorage`
-- 下载当前数据为 `resume-data.json`
-- 下载新的 `resume-data.js`
-- 导入之前导出的 JSON 数据
-- 一键恢复示例数据
-
-### 如何把网页里的修改同步到 GitHub？
-
-GitHub Pages 是静态网站，网页本身无法直接写回你的 GitHub 仓库。因此修改完成后点击：
-
-```text
-下载 resume-data.js
-```
-
-然后在 GitHub 仓库中用这个新文件替换原来的 `resume-data.js` 并提交即可。
-
-如果只是自己在同一台电脑浏览和打印，数据已经自动保存在浏览器中，不需要执行上述步骤。
-
-### 高级用户
-
-你仍然可以直接编辑 `resume-data.js`。页面首次打开时会以该文件中的数据作为默认值。
